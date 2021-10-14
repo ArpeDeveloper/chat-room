@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for chat-room app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ArpeDevelopper/server-chat-room.git"
+  },
+  "keywords": [
+    "server",
+    "chat-room",
+    "socket.io"
+  ],
+  "author": "Jesus Ross",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArpeDevelopper/server-chat-room/issues"
+  },
+  "homepage": "https://github.com/ArpeDevelopper/server-chat-room#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "socket.io": "^4.2.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
+  }
+}
