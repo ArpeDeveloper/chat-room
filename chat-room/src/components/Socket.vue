@@ -17,58 +17,26 @@
 		methods:{
 			connect: function(){
 				try{
-					this.socket = window.io(this.socketUrl);
-					this.socket.on('connect', this._onConnectSocket.bind(this))
+					this.$root.$data.socket = this.socket = window.io(this.socketUrl)
 						.on('disconnect', this._onDisconnectSocket.bind(this))
-						.on("geonotify", this._receiveMessage.bind(this))
-						.on("userConnected", this._loadUsers.bind(this))
+						.on("receiveMessage", this._receiveMessage.bind(this))
+						.on("loadUsers", this._loadUsers.bind(this))
+						.on('connect', this._onConnectSocket.bind(this))
 				}catch(e){
 					console.error(e.toString());
 				}
 			},
-			_onConnectSocket: function(socket){
-				console.log(socket)
-				this.socket.emit("userConnected",{id:this.socket.id,userName:this.$root.$children[0].$data.userName});
+			_onConnectSocket: function(){
+				this.socket.emit("registerUser",{id:this.socket.id,userName:this.$root.$data.userName});
 			},
 			_onDisconnectSocket: function(socket){
 				console.log(socket)
 			},
 			_receiveMessage: function(data){
-				console.log(data)
-				var defaultData = {
-					type: "",
-					message: "",
-					extra: {}
-				},
-				finalData = defaultData;//$.extend(true, defaultData, data);
-				try{
-					switch(finalData.type){
-						case "notify":
-							if(finalData.message != "")
-								this._notify(finalData.message,finalData.extra);
-						break;
-						case "refreshMap":
-							this._refreshMap(finalData.extra);
-						break;
-						case "info":
-							this._info(finalData.extra);
-						break;
-						case "autoLayer":
-							if(finalData.message != "")
-								//this._notify(finalData.message,finalData.extra);
-								this._autoLayer(finalData.extra);
-							break;
-						case "tracking":
-								this._tracking(finalData.extra);
-							break;
-					}
-					this._notifications(finalData);
-				}catch(e){
-					this._log(e.toString(),this.typeErrorLog);
-				}
+				this.$root.$emit("receiveMessage",data);
 			},
 			_loadUsers: function(data){
-				this.$root.$emit("loadusers",data)
+				this.$root.$emit("loadUsers",data)
 			}
 		}
 	}

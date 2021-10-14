@@ -10,8 +10,11 @@
 		<div v-if="socketOn">
 			<div v-if="logged" class="login row justify-content-md-center mt-3">
 				<div class="col-lg-8">
-					<p class="mb-1"><strong>{{ userName }}</strong></p>
-					<Chat/>
+					<p class="mb-1">
+						<strong v-if="currentUserNameChat">{{ currentUserNameChat }}</strong>
+						<strong v-else>Selecciona un usuario de la lista para comenzar a chatear</strong>
+					</p>
+					<Chat v-if="currentUserNameChat"/>
 				</div>
 				<div class="col">
 					<p class="mb-1"><strong>Usuarios conectados:</strong></p>
@@ -43,13 +46,18 @@ export default {
 	data:function(){
 		return {
 			logged: false,
-			userName: "",
-			socketOn:false
+			socketOn:false,
+			currentUserNameChat: null
 		}
 	},
 	methods:{
 	},
 	mounted(){
+		this.$root.$data.logged = false;
+		this.$root.$data.userName = "";
+		this.$root.$data.currentSocketData = null;
+		this.$root.$data.usersList = [];
+		this.$root.$on("logged",function(){this.logged = true}.bind(this));
 		this.$loadScript("http://192.168.50.25:3001/socket.io/socket.io.js")
 		.then(function(){
 			this.socketOn = true;
@@ -57,6 +65,9 @@ export default {
 			console.log(e);
 			this.socketOn = false;
 		}.bind(this)).finally(function(){document.getElementById("loader").style.display = "none"});
+		this.$root.$on("loadCurrentSocketData",function(){
+			this.currentUserNameChat = this.$root.$data.currentSocketData ? this.$root.$data.currentSocketData.userName : null;
+		}.bind(this))
 	}
 }
 </script>

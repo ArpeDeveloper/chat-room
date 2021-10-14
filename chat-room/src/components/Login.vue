@@ -36,8 +36,8 @@
 			submit: function(){
 				//Socket.methods.connect();
 				this.$children[0].connect()
-				this.$parent.logged = true;
-				this.$parent.userName = this.userName;
+				this.$root.$emit("logged");
+				this.$root.$data.userName = this.userName;
 
 			}
 		}

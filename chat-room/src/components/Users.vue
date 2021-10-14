@@ -1,7 +1,7 @@
 <template>
 	<div class="users">
-		<ul class="list-group" v-on:loadusers="loadUsers">
-			<User/>
+		<ul v-if="usersList.length" class="list-group">
+			<User :userData="user" :key="user.id" v-for="user in usersList"/>
 		</ul>
 	</div>
 </template>
@@ -19,15 +19,18 @@
 		},
 		data:function(){
 			return {
+				usersList:[],
 			}
 		},
 		methods:{
 			loadUsers: function(data){
-				console.log(data)
+				if(Array.isArray(data)){
+					this.$root.$data.usersList = this.usersList = data.filter(i=>{return i.id!=this.$root.$data.socket.id});
+				}
 			}
 		},
 		created :function(){
-			this.$root.$on("loadusers",this.loadUsers)
+			this.$root.$on("loadUsers",this.loadUsers)
 		}
 	}
 </script>
