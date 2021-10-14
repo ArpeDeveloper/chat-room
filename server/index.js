@@ -26,10 +26,32 @@ app.get('/', function(req, res){
 	res.send('<h1>Server running</h1>');
 });
 
-app.get("/chats", (request, response) => {
+app.get("/chats/:userName/:room", (request, response) => {
     try {
-        let result = await collection.findOne({ "_id": request.query.room });
-        response.send(result);
+    	const data = request.params
+        connect(function(){
+			const collection = client.db("chatroom").collection("chats");
+			collection.findOne({ "_id": data.userName }).then(function(result){
+				if(!result) {
+	                throw new Error("No existe el usuario")
+	            }
+	            let room = result.rooms.filter(item=>{return item._id == data.room});
+	            if(room.length > 0)
+	            	response.send(room.first());
+	            else
+	            {
+	            	const room = {"_id": data.room, "messages":[]};
+	            	collection.updateOne({ "_id": data.userName }, {
+			            "$push": {
+			                "rooms": room
+			            }
+			        });
+			        response.send(room);
+	            }
+			}).catch(function(e){console.log(e)});
+            
+		},function(e){console.log(e)});
+        
     } catch (e) {
         response.status(500).send({ message: e.message });
     }
