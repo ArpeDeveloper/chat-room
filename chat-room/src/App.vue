@@ -1,5 +1,23 @@
 <template>
+
 	<div class="container h-100" id="app">
+		<nav v-if="logged" class="navbar navbar-light bg-light fixed-top">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">Chat <strong v-if="currentUserNameChat">- {{ currentUserNameChat }}</strong></a>
+				<button class="navbar-toggler d-lg-none d-xl-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+					<div class="offcanvas-header">
+						<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Usuarios</h5>
+						<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<div class="offcanvas-body">
+						<Users/>
+					</div>
+				</div>
+			</div>
+		</nav>
 		<!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 		<div id="loader" class="w-100 h-100 text-center position-absolute bg-white">
 
@@ -7,16 +25,13 @@
 				<span class="visually-hidden">Cargando...</span>
 			</div>
 		</div>
-		<div v-if="socketOn" class="row h-100">
-			<div v-if="logged" class="row pt-3 h-100 mt-o">
-				<div class="col-lg-8 h-75">
-					<p class="mb-1">
-						<strong v-if="currentUserNameChat">{{ currentUserNameChat }}</strong>
-						<strong v-else>Selecciona un usuario de la lista para comenzar a chatear</strong>
-					</p>
+		<div v-if="socketOn" class="row h-100 pt-5">
+			<div v-if="logged" class="row pt-3 h-100 m-0">
+				<div class="col-12 col-lg-8 h-75">
+					<strong v-if="!currentUserNameChat">Seleccione un usuario para comenzar a chatear</strong>
 					<Chat v-if="currentUserNameChat"/>
 				</div>
-				<div class="col h-auto">
+				<div class="col h-auto d-none d-lg-block d-xl-none">
 					<p class="mb-1"><strong>Usuarios conectados:</strong></p>
 					<Users/>
 				</div>

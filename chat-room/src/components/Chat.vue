@@ -1,6 +1,6 @@
 <template>
 	<div class="chat h-100 mw-100">
-		<div class="row border border-1 border-primary h-75 w-100 overflow-auto m-0">
+		<div class="row border border-1 border-primary h-75 w-100 overflow-auto m-0 p-2">
 			<div id="chat" class="col">
 				
 			</div>
@@ -49,14 +49,16 @@
 				}
 			},
 			renderNewMessage: function(data){
-				const html = '<div class="float-start card w-75 m-1 shadow-sm bg-body rounded border border-info">'
+				const d = new Date(data.created_at);
+				const html = '<p class="w-100 m-0  float-start position-relative"><small class="text-muted">'+data.author+' - ' + d.toLocaleString()+'</small></p>'
+				+'<div class="float-start  w-75 m-1 ">'
 							+ '<div class="row g-0">'
-							+'    <div class="col-2 col-md-1 align-self-center">'
+							+'    <div class="col-2 col-md-1 align-self-center px-1">'
 							+'      <img src="'+ require('../assets/user.png') +'" class="img-fluid rounded-circle img-thumbnail" alt="usuario">'
 							+'    </div>'
-							+'    <div class="col-10 col-md-11">'
-							+'      <div class="card-body">'
-							+'        <p class="card-text text-start">'+data.message+'</p>'
+							+'    <div class="card col-10 col-md-11 shadow-sm bg-body rounded border border-info">'
+							+'      <div class="card-body p-1">'
+							+'        <p class="m-0 card-text text-start">'+data.message+'</p>'
 							+'      </div>'
 							+'   </div>'
 							+'  </div>'
@@ -64,14 +66,16 @@
 				document.getElementById("chat").innerHTML +=html
 			},
 			renderOwnMessage: function(data){
-				const html = '<div class="float-end card w-75 m-1 shadow-sm bg-body rounded ">'
+				const d = new Date(data.created_at);
+				const html = '<p class="w-100 m-0 float-end position-relative"><small class="float-end text-muted">'+data.author+' - ' + d.toLocaleString()+'</small></p>'
+							+'<div class="float-end  w-75 m-1  ">'
 							+ '<div class="row g-0">'
-							+'    <div class="col-10 col-md-11">'
-							+'      <div class="card-body">'
+							+'    <div class="card col-10 col-md-11 shadow-sm bg-body rounded">'
+							+'      <div class="card-body p-1">'
 							+'        <p class="card-text text-start">'+data.message+'</p>'
 							+'      </div>'
 							+'   </div>'
-							+'    <div class="col-2 col-md-1 align-self-center">'
+							+'    <div class="col-2 col-md-1 align-self-center px-1">'
 							+'      <img src="'+ require('../assets/user.png') +'" class="img-fluid rounded-circle img-thumbnail" alt="usuario">'
 							+'    </div>'
 							+'  </div>'
@@ -79,6 +83,7 @@
 				document.getElementById("chat").innerHTML +=html
 			},
 			getChat: function(){
+				document.getElementById("chat").innerHTML = "";
 				this.$root.$data.showLoader();
 				this.userName = this.$root.$data.userName;
 				this.userNameChat = this.$root.$data.currentSocketData.userName;
