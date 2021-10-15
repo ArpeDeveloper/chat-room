@@ -4,7 +4,7 @@
 		<nav v-if="logged" class="navbar navbar-light bg-light fixed-top">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#">Chat <strong v-if="currentUserNameChat">- {{ currentUserNameChat }}</strong></a>
-				<button class="navbar-toggler d-lg-none d-xl-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+				<button class="navbar-toggler d-lg-none d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -31,7 +31,7 @@
 					<strong v-if="!currentUserNameChat">Seleccione un usuario para comenzar a chatear</strong>
 					<Chat v-if="currentUserNameChat"/>
 				</div>
-				<div class="col h-auto d-none d-lg-block d-xl-none">
+				<div class="col h-auto d-none d-lg-block d-xl-block">
 					<p class="mb-1"><strong>Usuarios conectados:</strong></p>
 					<Users/>
 				</div>

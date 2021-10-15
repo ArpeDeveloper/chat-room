@@ -6,7 +6,7 @@
 			</div>
 		</div>
 		<form id="form-message" v-on:submit.prevent="submit" class="row m-0 w-100 pt-1 needs-validation">
-			<div class=" col-md-10 p-0">
+			<div class=" col-lg-10 p-0">
 				<textarea required=""  class="form-control" id="msgText" />
 				<div class="invalid-feedback">
 					Escribe un mensaje antes de presionar Enviar
