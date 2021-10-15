@@ -5,12 +5,15 @@
 				
 			</div>
 		</div>
-		<form v-on:submit.prevent="submit" class="row m-0 w-100 pt-1">
+		<form id="form-message" v-on:submit.prevent="submit" class="row m-0 w-100 pt-1 needs-validation">
 			<div class=" col-md-10 p-0">
-				<textarea  class="form-control" id="msgText" />
+				<textarea required=""  class="form-control" id="msgText" />
+				<div class="invalid-feedback">
+					Escribe un mensaje antes de presionar Enviar
+				</div>
 			</div>
 			<div class=" col-lg-2 p-0">
-				<button type="submit" class="btn btn-primary btn-block h-100 w-100">Enviar</button>
+				<button v-on:click.prevent="submit" type="submit" class="btn btn-primary btn-block h-100 w-100">Enviar</button>
 			</div>
 		</form>
 	</div>
@@ -31,11 +34,18 @@
 		methods:{
 			submit: function(){
 				const textarea = document.getElementById("msgText");
-				const msgText = textarea.value;
+				const msgText = textarea.value.trim();
+				if(msgText.length <= 0){
+					document.getElementById("form-message").classList.remove("needs-validation");
+					document.getElementById("form-message").classList.add("was-validated");
+					return false;
+				}
 				const data = {from:this.$root.$data.socket.id,to:this.$root.$data.currentSocketData,msg:msgText};
 				this.$root.$data.socket.emit("sendMessage",data);
 				this.renderOwnMessage({author:this.$root.$data.userName,to:data.to.userName,message:data.msg});
 				textarea.value = "";
+				document.getElementById("form-message").classList.add("needs-validation");
+					document.getElementById("form-message").classList.remove("was-validated");
 			},
 			receiveMessage:function(data){
 				if(data.author == this.$root.$data.userName){
