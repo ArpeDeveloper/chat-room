@@ -1,5 +1,5 @@
 <template>
-	<div class="login row justify-content-md-center">
+	<div class="login row justify-content-md-center m-0 pt-3">
 		<div class="col-lg-4 shadow p-3 mt-5 bg-body rounded">
 			<form v-on:submit.prevent="submit">
 				<div class="mb-3">

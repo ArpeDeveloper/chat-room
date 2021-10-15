@@ -3,6 +3,7 @@
 		<ul v-if="usersList.length" class="list-group">
 			<User :userData="user" :key="user.id" v-for="user in usersList"/>
 		</ul>
+		<p v-else>No hay usuarios conectados</p>
 	</div>
 </template>
 

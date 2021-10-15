@@ -1,5 +1,5 @@
 <template>
-	<div class="container" id="app">
+	<div class="container h-100" id="app">
 		<!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 		<div id="loader" class="w-100 h-100 text-center position-absolute bg-white">
 
@@ -7,16 +7,16 @@
 				<span class="visually-hidden">Cargando...</span>
 			</div>
 		</div>
-		<div v-if="socketOn">
-			<div v-if="logged" class="login row justify-content-md-center mt-3">
-				<div class="col-lg-8">
+		<div v-if="socketOn" class="row h-100">
+			<div v-if="logged" class="row pt-3 h-100 mt-o">
+				<div class="col-lg-8 h-75">
 					<p class="mb-1">
 						<strong v-if="currentUserNameChat">{{ currentUserNameChat }}</strong>
 						<strong v-else>Selecciona un usuario de la lista para comenzar a chatear</strong>
 					</p>
 					<Chat v-if="currentUserNameChat"/>
 				</div>
-				<div class="col">
+				<div class="col h-auto">
 					<p class="mb-1"><strong>Usuarios conectados:</strong></p>
 					<Users/>
 				</div>
@@ -53,10 +53,17 @@ export default {
 	methods:{
 	},
 	mounted(){
+		this.$root.$data.apiBaseUrl = process.env.VUE_APP_API_HOST + ":" + process.env.VUE_APP_API_PORT;
 		this.$root.$data.logged = false;
 		this.$root.$data.userName = "";
 		this.$root.$data.currentSocketData = null;
 		this.$root.$data.usersList = [];
+		this.$root.$data.showLoader = function(){
+			document.getElementById("loader").style.display = "block"
+		};
+		this.$root.$data.hideLoader = function(){
+			document.getElementById("loader").style.display = "none"
+		};
 		this.$root.$on("logged",function(){this.logged = true}.bind(this));
 		this.$loadScript("http://192.168.50.25:3001/socket.io/socket.io.js")
 		.then(function(){
@@ -64,7 +71,7 @@ export default {
 		}.bind(this)).catch(function(e){
 			console.log(e);
 			this.socketOn = false;
-		}.bind(this)).finally(function(){document.getElementById("loader").style.display = "none"});
+		}.bind(this)).finally(this.$root.$data.hideLoader);
 		this.$root.$on("loadCurrentSocketData",function(){
 			this.currentUserNameChat = this.$root.$data.currentSocketData ? this.$root.$data.currentSocketData.userName : null;
 		}.bind(this))

@@ -9,14 +9,15 @@
 		},
 		data:function(){
 			return {
-				port: '3001',
+				port: process.env.VUE_APP_SOCKET_PORT,
 				log: true,
-				socketUrl: "192.168.50.25:3001"//process.env.SOCKET_URL + ":" + this.port
+				host: process.env.VUE_APP_SOCKET_HOST
 			}
 		},
 		methods:{
 			connect: function(){
 				try{
+					this.socketUrl = this.host + ":" + this.port;
 					this.$root.$data.socket = this.socket = window.io(this.socketUrl)
 						.on('disconnect', this._onDisconnectSocket.bind(this))
 						.on("receiveMessage", this._receiveMessage.bind(this))

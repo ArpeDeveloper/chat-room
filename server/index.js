@@ -36,8 +36,10 @@ app.get("/chats/:userName/:room", (request, response) => {
 	                throw new Error("No existe el usuario")
 	            }
 	            let room = result.rooms.filter(item=>{return item._id == data.room});
-	            if(room.length > 0)
-	            	response.send(room.first());
+	            if(room.length > 0){
+	            	console.log(JSON.stringify(room));
+	            	response.send(room[0].messages ? room[0].messages : []);
+	            }
 	            else
 	            {
 	            	const room = {"_id": data.room, "messages":[]};
@@ -46,7 +48,7 @@ app.get("/chats/:userName/:room", (request, response) => {
 			                "rooms": room
 			            }
 			        });
-			        response.send(room);
+			        response.send(room.messages);
 	            }
 			}).catch(function(e){console.log(e)});
             
