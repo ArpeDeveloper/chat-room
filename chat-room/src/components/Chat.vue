@@ -59,7 +59,7 @@
 				}
 			},
 			renderNewMessage: function(data){
-				const d = new Date(data.created_at);
+				const d = new Date(data.created_at ? data.created_at : Date.now());
 				const html = '<p class="w-100 m-0  float-start position-relative"><small class="text-muted">'+data.author+' - ' + d.toLocaleString()+'</small></p>'
 				+'<div class="float-start  w-75 m-1 ">'
 							+ '<div class="row g-0">'
@@ -76,7 +76,7 @@
 				document.getElementById("chat").innerHTML +=html
 			},
 			renderOwnMessage: function(data){
-				const d = new Date(data.created_at);
+				const d = new Date(data.created_at ? data.created_at : Date.now());
 				const html = '<p class="w-100 m-0 float-end position-relative"><small class="float-end text-muted">'+data.author+' - ' + d.toLocaleString()+'</small></p>'
 							+'<div class="float-end  w-75 m-1  ">'
 							+ '<div class="row g-0">'
